@@ -33,7 +33,9 @@ def extract_llama_stack_version():
 
         # Look for ogx version in pip install commands
         # Pattern matches: ogx==X.Y.Z or ogx==X.Y.ZrcN+rhaiM
-        pattern = r"ogx==([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?(?:rc[0-9]+)?(?:\+rhai[0-9]+)?)"
+        pattern = (
+            r"ogx==([0-9]+\.[0-9]+\.[0-9]+(?:\.[0-9]+)?(?:rc[0-9]+)?(?:\+rhai[0-9]+)?)"
+        )
         match = re.search(pattern, content)
 
         if match:
@@ -221,9 +223,7 @@ def gen_distro_docs():
         version_link = f"https://github.com/{repo_owner}/ogx/tree/main"
         version_display = version
     else:
-        version_link = (
-            f"https://github.com/{repo_owner}/ogx/releases/tag/v{version}"
-        )
+        version_link = f"https://github.com/{repo_owner}/ogx/releases/tag/v{version}"
         version_display = version
 
     # header section
