@@ -49,14 +49,14 @@ STRIPPED_CONFIG_HEADER = (
     "# Stripped provider types (dependency only - available via custom config.yaml):\n"
 )
 
-CURRENT_LLAMA_STACK_VERSION = "v0.7.1+rhaiv.1"
+CURRENT_LLAMA_STACK_VERSION = "v0.8.0+rhaiv.0"
 _raw_version = os.getenv("LLAMA_STACK_VERSION", CURRENT_LLAMA_STACK_VERSION)
 LLAMA_STACK_VERSION = _validate_version(_raw_version)
 LLAMA_STACK_CLIENT_VERSION = (
-    "0.7.2"  # Explicit version; set to None to auto-derive from LLAMA_STACK_VERSION
+    "0.8.0"  # Explicit version; set to None to auto-derive from LLAMA_STACK_VERSION
 )
 BASE_REQUIREMENTS = [
-    f"llama-stack=={LLAMA_STACK_VERSION}",
+    f"ogx=={LLAMA_STACK_VERSION}",
 ]
 
 # Constrain packages we are patching to ensure reliable and repeatable build
@@ -71,12 +71,12 @@ PINNED_DEPENDENCIES = [
     "'setuptools==81.0.0'",  # due to bug in milvus-lite with unreleased fix: https://github.com/milvus-io/milvus-lite/pull/323
 ]
 
-source_install_command_pypi_client = """RUN uv pip install --no-cache 'llama-stack-api@git+https://github.com/opendatahub-io/llama-stack.git@{llama_stack_version}#subdirectory=src/llama_stack_api'
-RUN uv pip install --no-cache --no-deps git+https://github.com/opendatahub-io/llama-stack.git@{llama_stack_version}
-RUN uv pip install --no-cache --no-deps llama-stack-client=={llama_stack_client_version}"""
+source_install_command_pypi_client = """RUN uv pip install --no-cache 'ogx-api@git+https://github.com/opendatahub-io/ogx.git@{llama_stack_version}#subdirectory=src/ogx_api'
+RUN uv pip install --no-cache --no-deps git+https://github.com/opendatahub-io/ogx.git@{llama_stack_version}
+RUN uv pip install --no-cache --no-deps ogx-client=={llama_stack_client_version}"""
 
-source_install_command_git_client = """RUN uv pip install --no-cache 'llama-stack-api@git+https://github.com/opendatahub-io/llama-stack.git@{llama_stack_version}#subdirectory=src/llama_stack_api'
-RUN uv pip install --no-cache --no-deps git+https://github.com/opendatahub-io/llama-stack.git@{llama_stack_version}"""
+source_install_command_git_client = """RUN uv pip install --no-cache 'ogx-api@git+https://github.com/opendatahub-io/ogx.git@{llama_stack_version}#subdirectory=src/ogx_api'
+RUN uv pip install --no-cache --no-deps git+https://github.com/opendatahub-io/ogx.git@{llama_stack_version}"""
 
 
 def get_llama_stack_install(llama_stack_version):
@@ -152,7 +152,7 @@ def check_llama_stack_version():
     """Check if the llama-stack version in BASE_REQUIREMENTS matches the installed version."""
     try:
         result = subprocess.run(
-            ["llama", "stack", "--version"],
+            ["ogx", "stack", "--version"],
             capture_output=True,
             text=True,
             check=True,
@@ -162,7 +162,7 @@ def check_llama_stack_version():
         # Extract version from BASE_REQUIREMENTS
         expected_version = None
         for req in BASE_REQUIREMENTS:
-            if req.startswith("llama-stack=="):
+            if req.startswith("ogx=="):
                 expected_version = req.split("==")[1]
                 break
 
@@ -182,7 +182,7 @@ def check_llama_stack_version():
 
 def install_llama_stack_from_source(llama_stack_version):
     """Install llama-stack from source using git."""
-    print("installing llama-stack from source...")
+    print("installing ogx from source...")
     version = _validate_version(llama_stack_version)
     try:
         result = subprocess.run(
@@ -190,7 +190,7 @@ def install_llama_stack_from_source(llama_stack_version):
                 "uv",
                 "pip",
                 "install",
-                f"git+https://github.com/opendatahub-io/llama-stack.git@{version}",
+                f"git+https://github.com/opendatahub-io/ogx.git@{version}",
             ],
             check=True,
             capture_output=True,
@@ -264,7 +264,7 @@ def generate_stripped_config():
 
 def get_dependencies():
     """Execute the llama stack build command and capture dependencies."""
-    cmd = ["llama", "stack", "list-deps", "distribution/build.yaml"]
+    cmd = ["ogx", "stack", "list-deps", "distribution/build.yaml"]
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True)
         # Categorize and sort different types of pip install commands
@@ -427,11 +427,11 @@ def main():
     check_command_installed("uv")
     install_llama_stack_from_source(LLAMA_STACK_VERSION)
 
-    check_command_installed("llama", "llama-stack-client")
+    check_command_installed("ogx", "ogx-client")
 
     # Do not perform version check if installing from source
     if not is_install_from_source(LLAMA_STACK_VERSION):
-        print("Checking llama-stack version...")
+        print("Checking ogx version...")
         check_llama_stack_version()
 
     print("Generating stripped config.yaml...")

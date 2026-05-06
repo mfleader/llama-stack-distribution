@@ -108,7 +108,7 @@ jobs:
           LLAMA_STACK_VERSION: ${{ env.LLAMA_STACK_COMMIT_SHA }}
         run: |
           tmp_build_dir=$(mktemp -d)
-          git clone --filter=blob:none --no-checkout https://github.com/opendatahub-io/llama-stack.git "$tmp_build_dir"
+          git clone --filter=blob:none --no-checkout https://github.com/opendatahub-io/ogx.git "$tmp_build_dir"
           cd "$tmp_build_dir"
           git checkout "$LLAMA_STACK_VERSION"
           python3 -m venv .venv
@@ -323,7 +323,7 @@ jobs:
           LLAMA_STACK_VERSION: ${{ env.LLAMA_STACK_COMMIT_SHA }}
         run: |
           tmp_build_dir=$(mktemp -d)
-          git clone --filter=blob:none --no-checkout https://github.com/opendatahub-io/llama-stack.git "$tmp_build_dir"
+          git clone --filter=blob:none --no-checkout https://github.com/opendatahub-io/ogx.git "$tmp_build_dir"
           cd "$tmp_build_dir"
           git checkout "$LLAMA_STACK_VERSION"
           python3 -m venv .venv

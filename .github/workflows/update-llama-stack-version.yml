@@ -13,7 +13,7 @@ env:
   BRANCH: chore/update-llama-stack-${{ github.event.client_payload.tag }}
   VERSION_FILE: distribution/build.py
   SOURCE_RUN_URL: ${{ github.event.client_payload.source_run_url }}
-  MIDSTREAM_REPO_URL: https://github.com/opendatahub-io/llama-stack
+  MIDSTREAM_REPO_URL: https://github.com/opendatahub-io/ogx
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.client_payload.tag }}
