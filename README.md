@@ -41,7 +41,7 @@ The Containerfile is auto-generated from a template. To edit it, you can modify 
 > Ensure you include any env vars you might need for providers in the container env - you can read more about that [here](distribution/README.md).
 
 ```bash
-podman run -p 8321:8321 quay.io/opendatahub/llama-stack:<tag>
+podman run -p 8321:8321 quay.io/opendatahub/ogx:<tag>
 ```
 
 ### What image tag should I use?
@@ -63,7 +63,7 @@ podman run \
   -p 8321:8321 \
   -v <path_on_host>:<path_in_container> \
   -e RUN_CONFIG_PATH=<path_in_container> \
-  quay.io/opendatahub/llama-stack:<tag>
+  quay.io/opendatahub/ogx:<tag>
 ```
 
 > [!IMPORTANT]
@@ -92,6 +92,6 @@ To notify multiple channels, use comma-separated webhook URLs in `SLACK_WEBHOOK_
 
 Preview the message format without sending:
 ```bash
-IMAGE_NAME=quay.io/opendatahub/llama-stack IMAGE_TAG=abc123 COMMIT_SHA=abc1234567890 \
+IMAGE_NAME=quay.io/opendatahub/ogx IMAGE_TAG=abc123 COMMIT_SHA=abc1234567890 \
   WORKFLOW_URL=https://github.com/... .github/actions/notify-slack/notify.sh --preview
 ```
